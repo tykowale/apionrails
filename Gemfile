@@ -19,8 +19,11 @@ gem 'coffee-rails', '~> 4.0.0'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 
-#Api gems
+# Api gems
 gem 'active_model_serializers'
+
+# User Authentication
+gem 'devise'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
