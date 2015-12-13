@@ -25,13 +25,14 @@ gem 'active_model_serializers'
 # User Authentication
 gem 'devise'
 
+gem 'rspec-rails'
+
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
 end
 
 group :test do
-    gem 'rspec-rails'
     gem 'factory_girl'
     gem 'ffaker'
     gem 'shoulda-matchers', "< 3.0.0", require: false
