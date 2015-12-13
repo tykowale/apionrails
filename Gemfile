@@ -32,6 +32,7 @@ end
 
 group :test do
     gem 'rspec-rails'
-    gem 'factory_girl_rails'
+    gem 'factory_girl'
     gem 'ffaker'
+    gem 'shoulda-matchers', "< 3.0.0", require: false
 end
