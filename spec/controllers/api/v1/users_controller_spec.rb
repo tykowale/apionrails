@@ -52,4 +52,39 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       it { should respond_with 422 }
     end
   end
+
+  describe "PUT/PATCH #update" do
+    context "when successfully updated" do
+      before(:each) do
+        @user = FactoryGirl.create :user
+        put :update, { id: @user.id, user: { email: "newemail@abc.com" } }, format: :json
+      end
+
+      it "renders the json representation for the updated user" do
+        user_response = JSON.parse(response.body, symbolize_names: true)
+        expect(user_response[:email]).to eql "newemail@abc.com"
+      end
+
+      it { should respond_with 200 }
+    end
+
+    context "when unsuccessfuly updated" do
+      before(:each) do
+        @user = FactoryGirl.create :user
+        put :update, { id: @user.id, user: { email: "newemail.com" } }, format: :json
+      end
+
+      it "renders an errors json" do
+        user_response = JSON.parse(response.body, symbolize_names: true)
+        expect(user_response).to have_key(:errors)
+      end
+
+      it "includes details on error" do
+        user_response = JSON.parse(response.body, symbolize_names: true)
+        expect(user_response[:errors][:email]).to include "is invalid"
+      end
+
+      it { should respond_with 422 }
+    end
+  end
 end
