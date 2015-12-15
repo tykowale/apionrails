@@ -37,3 +37,9 @@ group :test do
     gem 'ffaker'
     gem 'shoulda-matchers', "< 3.0.0", require: false
 end
+
+gem 'sabisu_rails', github: "IcaliaLabs/sabisu-rails"
+gem 'compass-rails', '~> 1.1.3'
+gem 'furatto'
+gem 'font-awesome-rails'
+gem 'simple_form'
