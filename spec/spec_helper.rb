@@ -32,6 +32,12 @@ Dir[Rails.root.join("spec/factories/**/*.rb")].each {|f| require f}
 RSpec.configure do |config|
   config.pattern = "**/*_spec.rb"
   config.use_transactional_fixtures = true
+  config.include Request::JsonHelpers, :type => :controller
+  config.include Request::HeadersHelpers, :type => :controller
+
+  config.before(:each, type: :controller) do
+    include_default_accept_headers
+  end
 
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest

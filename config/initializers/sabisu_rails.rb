@@ -3,7 +3,7 @@
 SabisuRails.setup do |config|
 
   # Base uri for posting the
-  config.base_api_uri = 'api.market_place_api.dev'
+  config.base_api_uri = 'api.marketplaceapi.dev'
 
   # Ignored attributes for building the forms
   # config.ignored_attributes = %w{ created_at updated_at id }
