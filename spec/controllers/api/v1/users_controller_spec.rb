@@ -55,6 +55,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     context "when successfully updated" do
       before(:each) do
         @user = FactoryGirl.create :user
+        api_authorization_header @user.auth_token
         put :update, { id: @user.id, user: { email: "newemail@abc.com" } }
       end
 
@@ -69,6 +70,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     context "when unsuccessfuly updated" do
       before(:each) do
         @user = FactoryGirl.create :user
+        api_authorization_header @user.auth_token
         put :update, { id: @user.id, user: { email: "newemail.com" } }
       end
 
@@ -89,6 +91,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
   describe "DELETE #destroy" do
     before(:each) do
       @user = FactoryGirl.create :user
+      api_authorization_header @user.auth_token
       delete :destroy, { id: @user.id }
     end
 
