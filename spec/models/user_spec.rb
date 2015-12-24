@@ -2,7 +2,6 @@ require 'spec_helper'
 
 describe "User" do
     before { @user = FactoryGirl.build(:user) }
-
     subject { @user }
 
     it { should respond_to(:email) }
@@ -17,6 +16,23 @@ describe "User" do
     it { should allow_value('example@domain.com').for(:email) }
 
     it { should be_valid}
+    it { should have_many(:products) }
+
+    describe "products association" do
+      before do
+        @user.save
+        3.times { FactoryGirl.create :product, user: @user }
+      end
+
+      it "destroys the associated products on self destruct" do
+        products = @user.products
+        @user.destroy
+        products.each do |product|
+          puts product.id
+          expect(Product.find(product.id)).to raise_error ActiveRecord::RecordNotFound
+        end
+      end
+    end
 
     describe "#generate_authentication_token!" do
       it "generates a unique token" do
