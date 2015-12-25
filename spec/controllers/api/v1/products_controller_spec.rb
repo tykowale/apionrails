@@ -26,4 +26,40 @@ RSpec.describe Api::V1::ProductsController, type: :controller do
 
     it { should respond_with 200 }
   end
+
+  describe "POST #create" do
+    context "when successfully created" do
+      before(:each) do
+        user = FactoryGirl.create :user
+        @product_attributes = FactoryGirl.attributes_for :product
+        api_authorization_header user.auth_token
+        post :create, { user_id: user.id, product: @product_attributes }
+      end
+
+      it "renders the json for the product record" do
+        expect(json_response[:title]).to eql @product_attributes[:title]
+      end
+
+      it { should respond_with 201 }
+    end
+
+    context "when not created" do
+      before(:each) do
+        user = FactoryGirl.create :user
+        @invalid_product_attributes = { title: 'Smart TV', price: 'twelve' }
+        api_authorization_header user.auth_token
+        post :create, { user_id: user.id, product: @invalid_product_attributes }
+      end
+
+      it "renders an errors json" do
+        expect(json_response).to have_key(:errors)
+      end
+
+      it "renders details of error" do
+        expect(json_response[:errors][:price]).to include "is not a number"
+      end
+
+      it { should respond_with 422 }
+    end
+  end
 end
