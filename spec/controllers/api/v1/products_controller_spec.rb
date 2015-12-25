@@ -62,4 +62,40 @@ RSpec.describe Api::V1::ProductsController, type: :controller do
       it { should respond_with 422 }
     end
   end
+
+  describe "PUT #update" do
+    before(:each) do
+      @user = FactoryGirl.create :user
+      @product = FactoryGirl.create :product, user: @user
+      api_authorization_header @user.auth_token
+    end
+
+    context "on successful update" do
+      before(:each) do
+        patch :update, { user_id: @user.id, id: @product.id, product: { title: 'Big TV' } }
+      end
+
+      it "renders a json object for the updated user" do
+        expect(json_response[:title]).to eql 'Big TV'
+      end
+
+      it { should respond_with 200 }
+    end
+
+    context "on unsuccessful update" do
+      before(:each) do
+        patch :update, { user_id: @user.id, id: @product.id, product: { price: 'expensive' } }
+      end
+
+      it "renders an error json" do
+        expect(json_response).to have_key(:errors)
+      end
+
+      it "gives an explanation" do
+        expect(json_response[:errors][:price]).to include 'is not a number'
+      end
+
+      it { should respond_with 422 }
+    end
+  end
 end
